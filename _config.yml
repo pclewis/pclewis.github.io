@@ -15,5 +15,8 @@ url: "http://blog.pclewis.com" # the base hostname & protocol for your site
 twitter_username: _pcl
 github_username:  pclewis
 
+collections:
+- comments
+
 # Build settings
 markdown: kramdown

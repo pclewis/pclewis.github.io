@@ -12,4 +12,14 @@ layout: default
     {{ content }}
   </div>
 
+  {% for comment in site.comments %}
+    {% if comment.post_id == page.wordpressid %}
+  <div class="post-comment">
+      {% if comment.gravatar %}<img class="avatar" src="http://www.gravatar.com/avatar/{{comment.gravatar}}">{% endif %}
+      <div class="author">{{comment.author}}</div>
+      {{ comment.output }}
+  </div>
+    {% endif %}
+  {% endfor %}
+
 </article>
