@@ -25,11 +25,11 @@ Broken down, the requested URL in my case was:
 
     
     http://media.syscast.net/youtube.php
-      ? <strong>licensekey</strong> = KBVaQkxGH1lDVRdBWA1GVEdaTFpQF1ReWUcREU9YEFxBRgxE
-      & <strong>title</strong>      = BEYeQR8TAxxOLE8eBk0T
-      & <strong>licensedon</strong> = B1IAQhUG
-      & <strong>tvowner</strong>    = eBVbGUdLQFxeVA%3D%3D
-      & <strong>videoid</strong>    = eEJVE0xDHwxZAUQSWBJFARMJV1RTE19BWUETGBMNQg0%3D
+      ? licensekey = KBVaQkxGH1lDVRdBWA1GVEdaTFpQF1ReWUcREU9YEFxBRgxE
+      & title      = BEYeQR8TAxxOLE8eBk0T
+      & licensedon = B1IAQhUG
+      & tvowner    = eBVbGUdLQFxeVA%3D%3D
+      & videoid    = eEJVE0xDHwxZAUQSWBJFARMJV1RTE19BWUETGBMNQg0%3D
 
 
 At a glance, the values are obviously all Base64 encoded -- the trailing %3Ds on the last two fields are a dead giveaway. Decoding them doesn't produce anything human-readable, though; one online service gives me "(ZBLFYCUAXFTGZLZPT^YGOX\AFD" for the first field.
@@ -58,11 +58,11 @@ That was easy enough. Using the key to decode the rest of the fields, we can see
 
     
     http://media.syscast.net/youtube.php
-      ? <strong>licensekey</strong> = a27b84f0-2757-4176-9579-43a181d4a5a0
-      & <strong>title</strong>      = Masakazu Kojima
-      & <strong>licensedon</strong> = Numbat
-      & <strong>tvowner</strong>    = 1269399503
-      & <strong>videoid</strong>    = 1e8381fe7fdf727dce67632245c8dd6e
+      ? licensekey = a27b84f0-2757-4176-9579-43a181d4a5a0
+      & title      = Masakazu Kojima
+      & licensedon = Numbat
+      & tvowner    = 1269399503
+      & videoid    = 1e8381fe7fdf727dce67632245c8dd6e
 
 
 The second field (title) turns out to be my avatar name, followed by the sim name (licensedon), a UNIX time value (tvowner), and what looks like an MD5 hash (videoid). The time value is apparently used to prevent [replay attacks](http://en.wikipedia.org/wiki/Replay_attack): it is possible to immediately replay the request exactly and get a success response, but after about 30 seconds it causes an internal server error instead.
@@ -87,7 +87,7 @@ The video-background.gif file is just a transparent 1x1 GIF image:
 
 These are the only requests that are performed. Nothing nefarious appears to be taking place. There is no evidence of any kind of exploit, or the transmission of any kind of private information. So how does the service detect "illegitimate" clients?
 
-The magic turns out to be in the "User-Agent" request header, which identifies the client. In my case: Mozilla/5.0 (Windows; U; Windows NT 6.0; chrome://navigator/locale/navigator.properties; rv:1.8.1.21) Gecko/20090305 SecondLife/Emerald Viewer (default skin)
+The magic turns out to be in the "User-Agent" request header, which identifies the client. In my case: `Mozilla/5.0 (Windows; U; Windows NT 6.0; chrome://navigator/locale/navigator.properties; rv:1.8.1.21) Gecko/20090305 SecondLife/Emerald Viewer (default skin)`
 
 By using [curl](http://curl.haxx.se/) to replay an old request, and simply replacing "Emerald Viewer" with the name of a random client from [the Onyx project](http://onyx.modularsystems.sl/viewer_reference.html) (NeilLife), I was able to get the system to ban an alternate account I created. Note that this worked even though the time value was old, and the HTTP response status was a 500 error, so it would appear that the system to prevent replay attacks is broken. Looks like they're up to at least 1 false positive, even if it's a technicality. Also note that the actual response body did not change, so there doesn't seem to be any kind of exploit that is only sent to users of "bad" clients.
 

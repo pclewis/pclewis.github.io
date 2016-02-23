@@ -248,7 +248,7 @@ end
 
 One directory that may end up being important is the one where access logs are kept. If we find a local file inclusion vulnerability, we can leave some code in the log and include it, hopefully causing it to get executed. Even though we can find directories named "access-logs" or similar, there doesn't seem to be anything in them. If we follow the vulnerability to the affected source code (just use [Google code search](http://www.google.com/codesearch)), we'll see it only lists certain types of files, and excludes certain folders:
 
-[php wraplines="0" light="1"]
+~~~ php
 define("XS_ACCEPTED_FILE_TYPES", "txt zip pdf doc rtf tar ppt xls xml xsl xslt swf gif jpeg jpg png bmp"); // A list of accepted file extensions.
 define("XS_HIDDEN_FOLDERS", "CVS,_vti_cnf"); //Comma delimited list of hidden folders
 define("XS_HIDDEN_FILES", ""); //Comma delimited list of hidden files
@@ -490,7 +490,7 @@ The combination of suexec and hosted email is particularly catastrophic: since s
 
 
 
-<blockquote>"...it's surprising how often a clever adversary can pile up a stack of seemingly harmless failures into a dangerous tower of trouble." -- [Ed Felten](http://www.freedom-to-tinker.com/blog/felten/security-mindset-and-harmless-failures)</blockquote>
+> "...it's surprising how often a clever adversary can pile up a stack of seemingly harmless failures into a dangerous tower of trouble." -- [Ed Felten](http://www.freedom-to-tinker.com/blog/felten/security-mindset-and-harmless-failures)
 
 
 We've combined lots of individually useless bits of information and strung together a series of otherwise low-impact or low-risk attacks across various sites, and managed to steal data from a site with no security flaws of its own. You cannot realistically expect to have privacy in a house shared with a thousand other occupants and their guests, no matter how tightly you lock up your room. No web site where security is critical should be hosted on a server that's running a hundred others, and you should especially never trust them with important things like email.

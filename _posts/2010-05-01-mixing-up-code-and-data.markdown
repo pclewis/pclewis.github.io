@@ -41,13 +41,14 @@ This looks similar, but it's important to understand how it works. The first lin
 Even though it suffers the same criticism of being extra code every time you want to execute a SQL query, a developer used to coding this way is much less likely to make a mistake than a developer used to the previous example. The statements could also be prepared in an initializer somewhere completely different instead of right next to where data is being bound, to make it even harder to make a mistake.
 
 Imagine if HTML/HTTP had something similar:
-[html light="1"]
+
+~~~ html
 <html>
 <div class="title">&data[0,16];</div>
 <div class="body">&data[17,256];</div>
 </html>
 Data until EOF. <!-- &amp; No possibility of being interpreted as html. <script>alert(1);</script>
-[/html]
+~~~
 
 Note that the data part is a complete black box and terminated out-of-band (by closing the connection). There aren't lengths or other special markers embedded in the data. I'm not suggesting this is a realistic possibility for HTML or any other established standard. I just want to make the point that a protocol which makes it impossible to confuse code and data is invulnerable to injection attacks by default.
 
