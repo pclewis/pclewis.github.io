@@ -1,0 +1,257 @@
+<html>
+  <head>
+    <title>Starcraft vs. Monty Hall</title>
+    <style type="text/css">
+      #map {
+        position: relative;
+        background-image: url("kulasravine.png");
+        width: 500px;
+        height: 385px;
+      }
+
+      .stats {
+        text-align: center;
+        position: absolute;
+	left: 0px;
+        width: 100%;
+        font-family: verdana, arial, helvetica, sans-serif;
+        font-size: 10px;
+      }
+
+      #stats1 { top: -40px; }
+      #stats2 { top: -20px; }
+      #controls { top: -70px; }
+
+
+      .scout {
+        z-index: 999;
+      }
+
+      #scout0 {
+        background-image: url("overlord.png");
+        width: 30px;
+        height: 40px;
+        position: absolute;
+      }
+
+      #scout1 {
+        background-image: url("drone.png");
+        width: 30px;
+        height: 30px;
+        position: absolute;
+      }
+
+      .spawn {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+      }
+
+      .zergSpawn {
+        background-image: url("hatchery.png");
+      }
+
+      .terranSpawn {
+        background-image: url("commandcenter.png");
+      }
+
+      .protossSpawn {
+        background-image: url("nexus.png");
+      }
+    </style>
+    <script type="text/javascript">
+      var NUM_SPAWNS   = 4
+        , SIDE_OFFSET  = 80
+        , TOP_OFFSET   = 30
+        , SPAWN_WIDTH  = 50
+        , SPAWN_HEIGHT = 50
+        , MAP_WIDTH    = 500
+        , MAP_HEIGHT   = 385
+        , BOTTOM_SHIFT = 30
+        ;
+
+      var spawn_pool = [];
+
+      var stats = {
+        scout0_right: 0,
+        scout1_right: 0,
+        scouts_wrong: 0,
+        total:        0
+      };
+
+      function isTop(i) { return i < (NUM_SPAWNS / 2); }
+      function getTop(i) {
+        return isTop(i) 
+             ? TOP_OFFSET
+             : MAP_HEIGHT - SPAWN_HEIGHT - TOP_OFFSET;
+      }
+
+      function isLeft(i) { return (i % (NUM_SPAWNS/2)) == 0; }
+      function getLeft(i) {
+        shift = isTop(i) ? 0 : BOTTOM_SHIFT;
+        return isLeft(i)
+             ? SIDE_OFFSET - shift
+             : MAP_WIDTH - SPAWN_WIDTH - SIDE_OFFSET + shift;
+      }
+
+      function getSpawn(i) { return $('#spawn' + i); }
+
+      function eachSpawn(fn) {
+        for(i = 0; i < NUM_SPAWNS; ++i) {
+          fn( getSpawn(i), i );
+        }
+      }
+
+      function initSpawns() {
+        eachSpawn( function(s, i) {
+          spawn_pool.push(i);
+          $('#map').append( '<div class="spawn" id="spawn' + i + '"></div>' );
+          $('#spawn' + i)
+            .css('left', getLeft(i) + 'px')
+            .css('top',  getTop(i)  + 'px')
+            ;
+        } );
+      }
+
+      function clearSpawns() {
+        eachSpawn( function(spawn) {
+          spawn.removeClass().addClass("spawn");
+        })
+      }
+
+      function droneDone() {
+        $('#stepButton').removeAttr('disabled');
+        updateStats();
+        if( $('#keepGoing:checked').length != 0 ) 
+          step();
+      }
+
+      function step() {
+        $('#stepButton').attr('disabled', 1);
+        var spawns        = spawn_pool.clone().shuffle()
+          , my_spawn      = spawns[0]
+          , enemy_spawn   = spawns[1]
+          , scout_choices = spawns.slice(1).shuffle()
+          , speed         = parseInt($('#speed').val(), 10)
+          ;
+
+        clearSpawns();
+        $('.scout').hide();
+
+        getSpawn( my_spawn ).addClass( 'zergSpawn' );
+        getSpawn( enemy_spawn ).addClass( random(2) ? 'protossSpawn' : 'terranSpawn' );
+
+        sendScout( 0, my_spawn, scout_choices[0], speed, function() {
+          if( enemy_spawn != scout_choices[0] && $('#switchDrone:checked').length != 0 ) {
+            $('#scout1').stop();
+            sendScout( 1, -1, scout_choices[2], speed/3*2, droneDone );
+          }
+        } );
+        setTimeout(function() {
+          sendScout( 1, my_spawn, scout_choices[1], speed, droneDone );
+        }, speed/2);
+
+        if(scout_choices[0] == enemy_spawn)
+          stats.scout0_right += 1;
+        else if(scout_choices[1] == enemy_spawn)
+          stats.scout1_right += 1;
+        else
+          stats.scouts_wrong += 1;
+
+        stats.total += 1;
+
+      }
+
+      function statPct(n) {
+        return n + " (" + Math.round(n / stats.total * 100) + "%)";
+      }
+
+      function updateStats() {
+        $('#shouldStay').text( statPct(stats.scout1_right) );
+        $('#shouldSwitch').text( statPct(stats.scouts_wrong) );
+        $('#didntMatter').text( statPct(stats.scout0_right) );
+        $('#firstRight').text( statPct(stats.scout1_right + stats.scout0_right) );
+        $('#switchRight').text( statPct(stats.scouts_wrong) );
+      }
+
+      function sendScout(i, from, to, speed, callback) {
+        var to = { left: getLeft(to)
+                 , top: getTop(to)
+                 }
+
+        var scout = $('#scout' + i);
+        scout.show();
+        if(from != -1) {
+          scout
+            .css('left', getLeft(from))
+            .css('top',  getTop(from))
+        }
+        scout.animate(to, speed, callback);
+      }
+
+      Array.prototype.shuffle = function() {
+        //return this.sort( function() { return (Math.round(Math.random())-0.5); } );
+        var i = this.length, j, x;
+        while ( --i ) {
+          j = Math.floor( Math.random() * ( i + 1 ) );
+          x = this[i];
+          this[i] = this[j];
+          this[j] = x;
+        }
+        return this;
+      }
+
+      Array.prototype.clone = function() {
+        return this.slice(0);
+      }
+
+      function random(high) {
+        return Math.floor(Math.random() * (high))
+      }
+    </script>
+    <script src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      // Load jQuery
+      google.load("jquery", "1");
+      google.setOnLoadCallback( function() {
+        initSpawns();
+        $('.scout').hide();
+        $('#stepButton').click( step );
+      });
+    </script>
+  </head>
+  <body>
+    <table border=0 cellpadding=0 cellspacing=0 width=100% height=100%>
+      <tr>
+        <td align=center valign=center>
+          <div id="map">
+            <div class="stats" id="stats1">
+              Should switch: <span id="shouldSwitch">0 (0%)</span> /
+              Should stay: <span id="shouldStay">0 (0%)</span> /
+              Didn't matter: <span id="didntMatter">0 (0%)</span>
+            </div>
+            <div class="stats" id="stats2">
+              Right to begin with: <span id="firstRight">0 (0%)</span> /
+              Right only after switching: <span id="switchRight">0 (0%)</span>
+            </div>
+            <div class="stats" id="controls">
+              Speed:
+              <select id="speed">
+                <option value="2000">Very Slow</option>
+                <option value="1000">Slow</option>
+                <option value="500">Medium</option>
+                <option value="200">Fast</option>
+                <option value="0">Instant</option>
+              </select>
+              Keep going: <input type="checkbox" id="keepGoing" value="1" />
+              Switch drone: <input type="checkbox" id="switchDrone" value="1" />
+              <input type="button" id="stepButton" value="Go" />
+            </div>
+            <div class="scout" id="scout0"></div>
+            <div class="scout" id="scout1"></div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
