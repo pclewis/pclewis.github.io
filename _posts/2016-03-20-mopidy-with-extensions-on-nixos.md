@@ -8,7 +8,7 @@ tags:
 
 [Mopidy] is a sweet [mpd]-compatible music player that can play local files and stream from services like Spotify and YouTube.
 
-[NixOS] has [a package for Mopidy][1] and several extensions. You can install them with [`nix-env -i`], but Mopidy will not detect the extensions, and it can difficult to figure out why.
+[NixOS] has [a package for Mopidy][1] and several extensions. You can install them with [`nix-env -i`], but Mopidy will not detect the extensions, and it can be difficult to figure out why.
 
 This is Nix working [the way it is supposed to work][2]: the extensions are Python libraries, and the build environment for the mopidy package can't be altered by installing other packages.
 
