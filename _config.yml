@@ -11,7 +11,7 @@ email: pcl@pclewis.com
 description: > # this means to ignore newlines until "baseurl:"
   hi im pcl. let me tell you about computers and stuff
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://blog.pclewis.com" # the base hostname & protocol for your site
+url: "https://blog.pclewis.com" # the base hostname & protocol for your site
 twitter_username: _pcl
 github_username:  pclewis
 
