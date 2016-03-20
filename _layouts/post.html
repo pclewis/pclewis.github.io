@@ -16,7 +16,8 @@ layout: default
     {% if comment.post_id == page.wordpressid %}
   <div class="post-comment">
       {% if comment.gravatar %}<img class="avatar" src="https://www.gravatar.com/avatar/{{comment.gravatar}}">{% endif %}
-      <div class="author">{{comment.author}}</div>
+      <span class="author">{{comment.author}}</span>
+      <span class="date">{{comment.date_gmt | date: '%Y-%m-%d %r'}}</span>
       {{ comment.output }}
   </div>
     {% endif %}

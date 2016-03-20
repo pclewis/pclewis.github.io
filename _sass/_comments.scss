@@ -1,0 +1,24 @@
+.post-comment {
+    position: relative;
+    min-height: 90px;
+    margin: 15px 0;
+    padding: 5px;
+    .author {
+        font-weight: bold;
+    }
+    .date {
+        float: right;
+        font-size: 90%;
+    }
+    .avatar {
+        background-color: inherit ;
+        position: absolute;
+        left: -100px;
+        margin-top: -5px;
+        padding: 10px;
+    }
+}
+
+.post-comment:nth-child(odd) {
+    background-color: #eee;
+}
