@@ -14,7 +14,7 @@ tags:
 - xmonad
 ---
 
-[caption id="attachment_63" align="aligncenter" width="300" caption="My terminal layout"][![My terminal layout](http://blog.pclewis.com/wp-content/uploads/2009/12/xmonad-0e-300x225.jpg)](http://blog.pclewis.com/wp-content/uploads/2009/12/xmonad-0e.jpg)[/caption]
+[![My terminal layout](http://blog.pclewis.com/wp-content/uploads/2009/12/xmonad-0e-300x225.jpg)](http://blog.pclewis.com/wp-content/uploads/2009/12/xmonad-0e.jpg)
 
 I've been using [xmonad](http://xmonad.org/) as my window manager at work for a while now. xmonad is a minimal tiling window manager written in and configured using [Haskell](http://haskell.org/). The main stated advantage of using a tiling wm is that all your windows automatically expand to fill up your screen. What I like most about it is actually the ability to change workspaces (or virtual desktops) on each screen individually, without having to use separate X screens.
 

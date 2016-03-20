@@ -32,7 +32,9 @@ I've been programming for most of my life, so for many games, coding something t
 ## Lexis
 
 
-[caption id="attachment_55" align="alignleft" width="165" caption="Lexis game machine"]![Lexis game machine](http://blog.pclewis.com/wp-content/uploads/2009/12/lexis-165x300.jpg)[/caption]
+<img src="/wp-content/uploads/2009/12/lexis-165x300.jpg"
+     alt="Lexis game machine"
+     style="float: right; margin-left: 10px;">
 
 Recently, a friend introduced me to a word game on Second Life called Lexis. Lexis is basically 10 rounds of single-word Scrabble. You get 7 letters, and 7 spots to place them in, with the familiar bonus tiles: double word, triple word, double letter, triple letter. Your word must start in the left-most spot, so there is no strategy in how you place the word. The only thing to do is choose the highest-scoring word, taking into account the bonus squares, and input it as fast as possible.
 
@@ -334,7 +336,10 @@ This script also switches back to the putty window at the end, so that we can ju
 ### Input
 
 
-[caption id="attachment_56" align="aligncenter" width="300" caption="Solver in action"]![Solver in action](http://blog.pclewis.com/wp-content/uploads/2009/12/lexis2-300x169.jpg)[/caption]
+<img src="/wp-content/uploads/2009/12/lexis2-300x169.jpg"
+     alt="Solver in action"
+     width="300"
+     style="display: block; margin: 0 auto;">
 
 I created a simple command-line interface to the solver, which expects lines containing 14 characters: 7 for the letters that are available, and 7 to specify the bonus squares. I use 1 for normal squares, 2 and 3 for letter multiples, and @ (shift+2) and # (shift+3) for word multipliers. This works well enough, but I could only reliably get the speed bonus for words up to 4 letters.
 

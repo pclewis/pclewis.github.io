@@ -26,22 +26,14 @@ As well-known and documented as SQL injection is, it's still incredibly common. 
 Amusingly, the problem was listed as an unimportant known issue on the BanLink wiki:
 
 
-<blockquote>**Punctuation Charachters [',] in the group name aren't handled properly, and cause problems**
-
+> **Punctuation Charachters [',] in the group name aren't handled properly, and cause problems**
 > 
-> 
-	
 >   * Details: This is an HTML thing. Special charachters aren't being handled properly.
 > 
-	
 >   * Workaround: Don't use special charachters. Long-term solution is to have the system gracefully handle special charachters, either by allowing them, or by discarding them.
 > 
-
-
 > 
 > (From the [SL BanLink wiki](http://wiki.slbanlink.com/index.php?title=Known_Issues).)
-> 
-> </blockquote>
 
 
 
@@ -61,7 +53,7 @@ One thing that makes successful exploitation of a SQL injection vulnerability tr
 
 Another hinderance is that the error messages are often not exposed to the user. This makes it harder to craft a malicious query, because if something goes wrong, you won't be told what it is.
 
-[caption id="attachment_58" align="aligncenter" width="300" caption="Error message from BanLink"]![Error message from BanLink](http://blog.pclewis.com/wp-content/uploads/2009/12/banlink-error-300x105.png)[/caption]
+![Error message from BanLink](http://blog.pclewis.com/wp-content/uploads/2009/12/banlink-error-300x105.png)
 
 No such trouble on the BanLink website.
 
@@ -71,7 +63,7 @@ Thanks to this error message, you can simply use the pattern ' and 1=2 union sel
 ## The Take
 
 
-[caption id="attachment_60" align="aligncenter" width="300" caption="User database dump"][![User database dump](http://blog.pclewis.com/wp-content/uploads/2009/12/dbdump-300x50.png)](http://blog.pclewis.com/wp-content/uploads/2009/12/dbdump.png)[/caption]
+[![User database dump](http://blog.pclewis.com/wp-content/uploads/2009/12/dbdump-300x50.png)](http://blog.pclewis.com/wp-content/uploads/2009/12/dbdump.png)
 
 Names, passwords, email addresses; 100% of the data the site had, anyone could view and even modify. Even without access to the members area of the site.
 
@@ -87,7 +79,7 @@ One way to mitigate this kind of attack (and brute force attacks in general) is 
 
 BanLink stored unsalted MD5 hashes of passwords, which is about as good as storing them in plain text.
 
-[caption id="attachment_61" align="aligncenter" width="300" caption="Cracked md5 hashes"][![Cracked md5 hashes](http://blog.pclewis.com/wp-content/uploads/2009/12/krakken-300x85.png)](http://blog.pclewis.com/wp-content/uploads/2009/12/krakken.png)[/caption]
+[![Cracked md5 hashes](http://blog.pclewis.com/wp-content/uploads/2009/12/krakken-300x85.png)](http://blog.pclewis.com/wp-content/uploads/2009/12/krakken.png)
 
 
 ## This Is Where You Come In

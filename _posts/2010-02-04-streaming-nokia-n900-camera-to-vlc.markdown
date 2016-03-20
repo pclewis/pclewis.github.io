@@ -18,6 +18,7 @@ I recently had need to look at the back of my own head, and using the camera on 
 In my setup, my computer is 192.168.0.100 and the phone is 192.168.0.200. You will have to replace them with your own IP addresses.
 
 Here is the command to start gstreamer on the phone. You will probably want to put it in a script:
+
 ~~~ bash
 gst-launch v4l2camsrc device=/dev/video0 ! \
            dsph264enc ! \
@@ -27,11 +28,14 @@ gst-launch v4l2camsrc device=/dev/video0 ! \
 
 If gst-launch is not found, you probably need to install the gstreamer-tools package:
 
-~~~apt-get install gstreamer-tools~~~
+~~~ bash
+apt-get install gstreamer-tools
+~~~
 
 To use the camera on the front of the phone, you can change the device to /dev/video1.
 
 Here is the minimal sdp file I was able to use with VLC to get it to play. Using the "Open Network" dialog to try and play an RTP stream did not work.
+
 ~~~
 v=0
 m=video 5434 RTP/AVP 96
@@ -41,11 +45,11 @@ a=rtpmap:96 H264/90000
 
 The second line (m=) contains the port, the third (c=) contains the IP address of the phone, and the fourth (a=) specifies the codec.
 
-To use MP4 instead of H264, you can just change h264 to mp4v everywhere. In the SDP file, it should be MP4V-ES, as in: a=rtpmap:96 MP4V-ES/90000. If you get errors in VLC like:
+To use MP4 instead of H264, you can just change h264 to mp4v everywhere. In the SDP file, it should be MP4V-ES, as in: `a=rtpmap:96 MP4V-ES/90000`. If you get errors in VLC like:
 
-~~~avcodec warning: cannot decode one frame (14922 bytes)~~~
+`avcodec warning: cannot decode one frame (14922 bytes)`
 
-Then add send-config=true to the rtpmp4v part of the gstreamer pipeline, and make sure you start VLC before you start streaming:
+Then add `send-config=true` to the rtpmp4v part of the gstreamer pipeline, and make sure you start VLC before you start streaming:
 
 ~~~ bash
 gst-launch v4l2camsrc device=/dev/video0 ! \
@@ -58,4 +62,6 @@ For H263, you can try dsph263enc, rtph263pay and H263-1998 or H263-2000, but I c
 
 I don't know if there's a way to control the focus, white balance, etc, but I was able to use the flashlight-applet to turn on the camera LEDs while streaming after I downgraded to 0.2-0:
 
-~~~apt-get install flashlight-applet=0.2-0~~~
+~~~ bash
+apt-get install flashlight-applet=0.2-0
+~~~
