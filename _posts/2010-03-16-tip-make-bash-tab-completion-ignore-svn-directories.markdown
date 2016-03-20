@@ -18,6 +18,8 @@ Having to tab through the fifty million otherwise empty "net/mycompany/project/u
 
 It's actually really easy to fix this:
 
-~~~ bashexport FIGNORE=.svn~~~
+~~~ bash
+export FIGNORE=.svn
+~~~
 
 $FIGNORE is just a colon-separated list of suffixes to ignore when doing tab completion.
