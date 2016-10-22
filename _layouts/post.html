@@ -18,7 +18,7 @@ layout: default
       {% if comment.gravatar %}<img class="avatar" src="https://www.gravatar.com/avatar/{{comment.gravatar}}">{% endif %}
       <span class="author">{{comment.author}}</span>
       <span class="date">{{comment.date_gmt | date: '%Y-%m-%d %r'}}</span>
-      {{ comment.output }}
+      {{ comment.content | markdownify }}
   </div>
     {% endif %}
   {% endfor %}
