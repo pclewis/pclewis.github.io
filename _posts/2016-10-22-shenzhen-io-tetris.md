@@ -27,7 +27,7 @@ Phew! Now, let me ruin the pace we've set by explaining everything in excruciati
 
 ## Major challenge: storing more than one anything
 
-Processors have only one working register: `acc`. The larger ones add `dat`, which can only be set with `mov`. That means to modify `dat`, you must clobber `acc`, so even the big processors can only effectively store a single value.
+Processors have only one working register: `acc`. The larger ones add `dat`, which can only be set with `mov`. That means to perform operations on the value of `dat`, you must clobber `acc`, so even the big processors can only effectively store a single value.
 
 ```nasm
 mov dat acc
@@ -43,9 +43,9 @@ A falling tetris piece has three values that change while it's falling: the colu
 
 There are only 4 possible rotations for a piece, so that's easy to fit in a digit. The default LCD matrix is 10x12, so X already fits in a digit, and Y can fit in a digit if we give up the bottom two rows.
 
-Thus we can store our whole state in one register: the first digit is the rotation (0-3), the second digit is the row (0-9), and the third digit is the column (0-9).
+Thus we can store our whole state in one register: the left digit is the rotation (0-3), the middle digit is the row (0-9), and the right digit is the column (0-9).
 
-To move a piece right or left we just add or subtract 1, to move it up and down we add or subtract 10, and to rotate it we add or subtract 100.
+To move a piece right or left we just `add 1` or `sub 1`, to move it down we `add 10`, and to rotate it we `add 100`.
 
 To convert this number to a cell on the matrix, we remove the rotation (`dst 2 0`) and `add 1`.
 
@@ -57,7 +57,7 @@ We can represent all but the line piece with 6 bits. Using 1 for "on" and 0 for 
 
 [![Storing pieces][2]][2]
 
-Notice how many pieces share a row with another piece. This lets us squish them together when we store them in a ROM chip. This did not end up being useful, but it is neat.
+Notice how most pieces share a row with another piece. This lets us squish them together when we store them in a ROM chip. This did not end up being useful, but it is neat.
 
 We can step through these bits different ways to render different rotations:
 
@@ -77,7 +77,7 @@ If we then give up a column on the board, each cell can store a whole row. This 
 
 There's no `div` instruction, but we can divide a single digit by 3 with `mul 34` and then `dgt 2`.
 
-To convert the digit 0-7 into its component binary bits, we can multiply by 125. A set bit is indicated by a digit greater than 3 in the result.
+To convert the digit 0-7 into its component binary bits, we can multiply by 125. A set bit is indicated by a digit greater than 3 in the result. Since it is not any more expensive for callers to `tgt reg 3` than `teq reg 0`, we don't need to interpret it here.
 
 ## Putting it all together
 
